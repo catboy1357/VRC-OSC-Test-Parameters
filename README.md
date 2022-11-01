@@ -10,6 +10,7 @@ If you don't have python installed already, and you are running Windows, get it 
 1) Install python
 2) Click Code 
 3) Download ZIP
-4) Open `"VRC-OSC-Test-Parameters"`
-5) Run `Start.bat`
-6) Enter Data you want to test.
+4) Extract files
+5) Open `"VRC-OSC-Test-Parameters"`
+6) Run `Start.bat`
+7) Enter Data you want to test.
