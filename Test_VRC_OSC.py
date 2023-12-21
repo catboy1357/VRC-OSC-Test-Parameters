@@ -5,44 +5,43 @@
 from pythonosc.udp_client import SimpleUDPClient
 
 
+def get_user_input():
+    address = input('Parameter Name:  ')
+    data_type = input('Type: 1 int, 2 bool, 3 float:  ')
+    value = input('Value Number:  ')
+    return address, data_type, value
+
+
+def parse_data(data_type, value):
+    if data_type == '1':
+        return int(value)
+    elif data_type == '2':
+        return bool(int(value))
+    elif data_type == '3':
+        return float(value)
+
+
+def send_data(client, path, data):
+    print(f'Sent {data} to /avatar/parameters/{path}: {data}')
+    client.send_message(f'/avatar/parameters/{path}', data)
+    print('\n', '----------------------------', '\n')
+
+
 def main():
-    # setup
-    ip = "127.0.0.1"
-    port = 9000
-    client = SimpleUDPClient(ip, port)
+    client = SimpleUDPClient("127.0.0.1", 9000)  # Default VRChat ip & port
 
-    path_ = None
-    data_ = None
-    data = [None]*3
-
-    # info
-    print('Input path, type, and vale.')
+    print('Input path, type, and value.')
+    print('Parameter names are case sensitive')
     print('Use ctrl + C to exit', '\n')
 
-    # loop
     while True:
-        # get info from user
-        data[0] = input('Address: string: \n')
-        data[1] = input('Type: 1 int, 2 bool, 3 float: \n')
-        data[2] = input('value: Num or bool: 1 or 0: \n')
-
-        # parse data
-        path_ = data[0]
-        if data[1] == '1':
-            data_ = int(data[2])
-        if data[1] == '2':
-            if data[2] == '1':
-                data_ = True
-            else:
-                data_ = False
-        if data[1] == '3':
-            data_ = float(data[2])
-
-        # sends the data
-        print(f'sending /avatar/parameters/{path_} : {data_}')
-        client.send_message(f'/avatar/parameters/{str(path_)}', data_)
-        print('\n', '----------------------------', '\n')
+        address, data_type, value = get_user_input()
+        data = parse_data(data_type, value)
+        send_data(client, address, data)
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('\n\n', "Exit")
